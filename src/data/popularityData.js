@@ -9,7 +9,7 @@ const popularityData = [
     image: "https://i.pinimg.com/736x/f7/ad/3c/f7ad3c4fb74cc20008296543fa6eff22.jpg",
     popularity: "1K",
     price: 10,
-    oldPrice: null,
+    oldPrice: 15,
     discount: null,
     isSpecial: false,
   },
@@ -18,7 +18,7 @@ const popularityData = [
     image: "https://i.pinimg.com/736x/f1/36/4d/f1364de7843e70b548cfb1c488015f9b.jpg",
     popularity: "10K",
     price: 95,
-    oldPrice: null,
+    oldPrice: 130,
     discount: null,
     isSpecial: false,
   },
@@ -27,7 +27,7 @@ const popularityData = [
     image: "https://i.pinimg.com/736x/44/75/9f/44759f905358dbf06d2de26569b55352.jpg",
     popularity: "50K",
     price: 420,
-    oldPrice: null,
+    oldPrice: 450,
     discount: null,
     isSpecial: false,
   },
@@ -36,7 +36,7 @@ const popularityData = [
     image: "https://i.pinimg.com/736x/67/c0/a0/67c0a02e368eeb59d0e1cef030e48aa0.jpg",
     popularity: "75K",
     price: 650,
-    oldPrice: null,
+    oldPrice: 780,
     discount: null,
     isSpecial: false,
   },
@@ -54,7 +54,7 @@ const popularityData = [
   },
   {
     id: 6,
-    image: "https://i.pinimg.com/736x/63/76/20/637620265c1e933766ef4d3d59821c18.jpg",
+    image: "https://i.pinimg.com/736x/b1/22/b1/b122b1aee31ffd887235901f0ce719c7.jpg",
     popularity: "1.25Lakh",
     price: 1150,
     oldPrice: 1500,
@@ -72,15 +72,22 @@ const popularityData = [
     isSpecial: true,
     offer: "Best Value",
   },
+
+  // ---------- Custom Amount Package ----------
+  // Customer enters their own popularity amount; price is calculated live.
+  // ratePerK = ₹10 per 1K, same as the base 1K package rate — this is
+  // intentionally the highest per-unit rate in the list so custom orders
+  // never undercut the bulk/special package pricing above.
   {
     id: 8,
     image: "https://i.pinimg.com/736x/94/91/b9/9491b97e794b5494a797a9538bbe1d13.jpg",
-    popularity: "Coustom",
-    price: 850,
-    oldPrice: 1000,
-    discount: "SAVE 15%",
+    popularity: "Custom",
     isSpecial: true,
-    offer: "Mega Deal",
+    isCustom: true,
+    offer: "Your Choice",
+    ratePerK: 10,
+    minAmount: 1000, // 1K minimum
+    maxAmount: 90000, // 90K maximum — beyond this, use the named special packages
   },
 ];
 

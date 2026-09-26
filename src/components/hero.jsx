@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const banners = [
-  "https://i.pinimg.com/736x/9f/fe/72/9ffe72e2371f8f9580502dc7e1a2e0d2.jpg",
-  "https://i.pinimg.com/736x/f6/cc/33/f6cc33a744afdd3ebb032110182c1b34.jpg",
-  "https://i.pinimg.com/736x/5a/e3/94/5ae3944c03f0f97838fac28e65288580.jpg",
+  "https://i.pinimg.com/736x/b2/57/c7/b257c7c1abe69a4ca4bbd4402805f5d7.jpg",
+  "https://i.pinimg.com/736x/ae/1b/0a/ae1b0a131501c9cc120558c2f5ac5e77.jpg",
+  "https://i.pinimg.com/736x/d4/31/c5/d431c5400ded806100b4cf25707212f1.jpg",
 ];
 
 const AUTOPLAY_MS = 3500;
@@ -59,7 +59,7 @@ function Hero() {
         }}
       >
         {/* Slide track */}
-        <div className="relative h-[180px] w-full sm:h-[240px] md:h-[360px] lg:h-[430px]">
+        <div className="relative h-[220px] w-full sm:h-[300px] md:h-[420px] lg:h-[480px]">
           <div
             className="flex h-full w-full transition-transform duration-700 ease-out"
             style={{ transform: `translateX(-${current * 100}%)` }}
@@ -69,16 +69,15 @@ function Hero() {
                 key={banner}
                 src={banner}
                 alt={`PopWala banner ${index + 1} of ${banners.length}`}
-                className="h-full w-full shrink-0 object-cover"
+                className="h-full w-full shrink-0 object-cover object-center"
                 loading={index === 0 ? "eager" : "lazy"}
                 draggable={false}
               />
             ))}
           </div>
 
-          {/* Dark gradient overlay for legibility + gaming mood */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0B0E11] via-transparent to-transparent" />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0B0E11]/70 via-transparent to-[#0B0E11]/70" />
+          {/* Subtle bottom-only gradient — just enough for dot/arrow legibility */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#0B0E11]/80 to-transparent" />
 
           {/* Left Arrow */}
           <button

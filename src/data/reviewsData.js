@@ -3,7 +3,7 @@ const reviewsData = [
     id: 1,
     name: "Rohit Sharma",
     gameId: "5123456789",
-    rating: 5,
+    rating: 4,
     review:
       "Bhai popularity turant aa gayi order ke 5 min baad hi. Bahut fast service hai, ekdum trust worthy.",
   },
@@ -11,7 +11,7 @@ const reviewsData = [
     id: 2,
     name: "Aman Verma",
     gameId: "5987654321",
-    rating: 5,
+    rating: 4,
     review:
       "10K popularity li thi, price bhi kam tha aur delivery instant. Ab hamesha yahi se lunga.",
   },
