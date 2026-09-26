@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const banners = [
-  "https://i.pinimg.com/1200x/46/61/4f/46614fea38c28bf35c7114f31a7ae3d5.jpg",
-  "https://i.pinimg.com/736x/c6/7d/e9/c67de95bb8f85b2276c0dcfab126015c.jpg",
-  "https://i.pinimg.com/1200x/f7/ed/eb/f7edebb018969b85738e0ea74fcbbb0c.jpg",
+  "https://i.pinimg.com/736x/9f/fe/72/9ffe72e2371f8f9580502dc7e1a2e0d2.jpg",
+  "https://i.pinimg.com/736x/f6/cc/33/f6cc33a744afdd3ebb032110182c1b34.jpg",
+  "https://i.pinimg.com/736x/5a/e3/94/5ae3944c03f0f97838fac28e65288580.jpg",
 ];
 
 const AUTOPLAY_MS = 3500;
