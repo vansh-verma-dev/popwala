@@ -1,4 +1,8 @@
 import { FaTelegramPlane, FaInstagram, FaGamepad } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
+// Keep this the same everywhere it's used across the site
+const TELEGRAM_USERNAME = "BGMI_PopWala";
 
 const clipCorner = {
   clipPath:
@@ -40,7 +44,7 @@ function Footer() {
             {/* Social */}
             <div className="mt-6 flex gap-3">
               <a
-                href="https://t.me/PopWala"
+                href={`https://t.me/${TELEGRAM_USERNAME}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Telegram"
@@ -90,22 +94,36 @@ function Footer() {
               Support
             </h3>
             <div className="flex flex-col gap-3">
-              {[
-                { label: "Telegram Support", href: "https://t.me/PopWala", external: true },
-                { label: "Contact Us", href: "#contact" },
-                { label: "Privacy Policy", href: "#privacy" },
-                { label: "Terms & Conditions", href: "#terms" },
-              ].map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target={link.external ? "_blank" : undefined}
-                  rel={link.external ? "noopener noreferrer" : undefined}
-                  className="w-fit text-sm text-gray-500 transition hover:text-[#FF4D2E]"
-                >
-                  {link.label}
-                </a>
-              ))}
+              <a
+                href={`https://t.me/${TELEGRAM_USERNAME}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-fit text-sm text-gray-500 transition hover:text-[#FF4D2E]"
+              >
+                Telegram Support
+              </a>
+
+              <a
+                href="#contact"
+                className="w-fit text-sm text-gray-500 transition hover:text-[#FF4D2E]"
+              >
+                Contact Us
+              </a>
+
+              {/* Routed pages */}
+              <Link
+                to="/PrivacyPolicy"
+                className="w-fit text-sm text-gray-500 transition hover:text-[#FF4D2E]"
+              >
+                Privacy Policy
+              </Link>
+
+              <Link
+                to="/terms"
+                className="w-fit text-sm text-gray-500 transition hover:text-[#FF4D2E]"
+              >
+                Terms & Conditions
+              </Link>
             </div>
           </div>
         </div>
@@ -132,7 +150,7 @@ function Footer() {
           </div>
 
           <a
-            href="https://t.me/BGMI_PopWala"
+            href={`https://t.me/${TELEGRAM_USERNAME}`}
             target="_blank"
             rel="noopener noreferrer"
             style={clipCorner}
