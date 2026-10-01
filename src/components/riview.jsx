@@ -65,9 +65,7 @@ function ReviewCard({ review }) {
         </div>
         <div className="min-w-0">
           <p className="truncate text-sm font-bold text-white">{name}</p>
-          <p className="truncate font-mono text-xs text-[#FF4D2E]/80">
-            {gameId}
-          </p>
+         
         </div>
       </div>
     </div>
