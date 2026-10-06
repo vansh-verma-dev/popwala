@@ -4,31 +4,56 @@ import {
   FiUser,
   FiPhone,
   FiHash,
-  FiCreditCard,
-  FiSmartphone,
+  FiSend,
+  FiInstagram,
   FiCheckCircle,
 } from "react-icons/fi";
 
-const paymentMethods = [
-  { id: "upi", label: "UPI", icon: FiSmartphone },
-  { id: "card", label: "Card", icon: FiCreditCard },
+// Order kaha bhejna hai: Telegram ya Instagram
+const orderChannels = [
+  { id: "telegram", label: "Telegram", icon: FiSend },
+  { id: "instagram", label: "Instagram", icon: FiInstagram },
 ];
 
-// Replace with your actual Telegram username (without the @)
+// Usernames (without the @)
 const TELEGRAM_USERNAME = "BGMI_PopWala";
+const INSTAGRAM_USERNAME = "bgmipopwala";
 
 const clipCorner = {
   clipPath:
     "polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)",
 };
 
+// Clipboard copy (with fallback for older browsers)
+const copyToClipboard = (text) => {
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(() => {});
+      return;
+    }
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+  } catch (err) {
+    // ignore - user can still type details manually
+  }
+};
+
 function CheckoutModal({ pack, onClose }) {
   const [fullName, setFullName] = useState("");
   const [mobile, setMobile] = useState("");
   const [uid, setUid] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("upi");
+  const [channel, setChannel] = useState("telegram");
   const [errors, setErrors] = useState({});
   const [isPlaced, setIsPlaced] = useState(false);
+  const [placedChannel, setPlacedChannel] = useState("telegram");
+  const [orderMessage, setOrderMessage] = useState("");
+  const [copied, setCopied] = useState(false);
 
   const validate = () => {
     const next = {};
@@ -51,16 +76,39 @@ function CheckoutModal({ pack, onClose }) {
       `Full Name: ${fullName}`,
       `Mobile: ${mobile}`,
       `BGMI UID: ${uid}`,
-      `Payment Method: ${paymentMethod.toUpperCase()}`,
+      `Order Via: ${channel === "telegram" ? "Telegram" : "Instagram"}`,
     ].join("\n");
 
-    const telegramUrl = `https://t.me/${TELEGRAM_USERNAME}?text=${encodeURIComponent(
-      message
-    )}`;
+    setOrderMessage(message);
+    setPlacedChannel(channel);
 
-    window.open(telegramUrl, "_blank", "noopener,noreferrer");
+    if (channel === "telegram") {
+      // Telegram supports prefilled text
+      const telegramUrl = `https://t.me/${TELEGRAM_USERNAME}?text=${encodeURIComponent(
+        message
+      )}`;
+      window.open(telegramUrl, "_blank", "noopener,noreferrer");
+    } else {
+      // Instagram does NOT support prefilled text, so copy the message
+      // and open the DM. User just pastes and sends.
+      copyToClipboard(message);
+      window.open(
+        `https://ig.me/m/${INSTAGRAM_USERNAME}`,
+        "_blank",
+        "noopener,noreferrer"
+      );
+    }
+
     setIsPlaced(true);
   };
+
+  const handleCopyAgain = () => {
+    copyToClipboard(orderMessage);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const isTelegram = placedChannel === "telegram";
 
   return (
     <div
@@ -93,23 +141,59 @@ function CheckoutModal({ pack, onClose }) {
             <h2 className="text-xl font-black uppercase italic text-white">
               Almost Done
             </h2>
-            <p className="mt-2 text-sm text-gray-400">
-              We've opened Telegram with your order details pre-filled. Just
-              hit <span className="font-semibold text-white">Send</span> to
-              confirm your order for{" "}
-              <span className="font-mono text-[#FF4D2E]">{uid}</span>.
-            </p>
-            <p className="mt-2 text-xs text-gray-500">
-              Didn't open?{" "}
-              <a
-                href={`https://t.me/${TELEGRAM_USERNAME}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold text-[#FF4D2E] hover:underline"
-              >
-                Open Telegram manually
-              </a>
-            </p>
+
+            {isTelegram ? (
+              <>
+                <p className="mt-2 text-sm text-gray-400">
+                  We've opened Telegram with your order details pre-filled.
+                  Just hit{" "}
+                  <span className="font-semibold text-white">Send</span> to
+                  confirm your order for{" "}
+                  <span className="font-mono text-[#FF4D2E]">{uid}</span>.
+                </p>
+                <p className="mt-2 text-xs text-gray-500">
+                  Didn't open?{" "}
+                  <a
+                    href={`https://t.me/${TELEGRAM_USERNAME}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-[#FF4D2E] hover:underline"
+                  >
+                    Open Telegram manually
+                  </a>
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="mt-2 text-sm text-gray-400">
+                  Your order details are copied. Open the Instagram chat,{" "}
+                  <span className="font-semibold text-white">paste</span> the
+                  message and hit{" "}
+                  <span className="font-semibold text-white">Send</span> to
+                  confirm your order for{" "}
+                  <span className="font-mono text-[#FF4D2E]">{uid}</span>.
+                </p>
+                <button
+                  type="button"
+                  onClick={handleCopyAgain}
+                  className="mt-3 text-xs font-semibold text-[#FF4D2E] hover:underline"
+                >
+                  {copied ? "Copied!" : "Copy order details again"}
+                </button>
+                <p className="mt-2 text-xs text-gray-500">
+                  Didn't open?{" "}
+                  <a
+                    href={`https://ig.me/m/${INSTAGRAM_USERNAME}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-[#FF4D2E] hover:underline"
+                  >
+                    Open Instagram manually
+                  </a>
+                </p>
+              </>
+            )}
+
             <button
               onClick={onClose}
               className="mt-6 w-full border border-white/15 bg-white/5 py-3 text-xs font-bold uppercase tracking-wide text-white transition hover:border-[#FF4D2E]/60 hover:text-[#FF4D2E]"
@@ -220,20 +304,20 @@ function CheckoutModal({ pack, onClose }) {
                 )}
               </div>
 
-              {/* Payment Method */}
+              {/* Order Via (Telegram / Instagram) */}
               <div>
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-400">
-                  Payment Method
+                  Order Via
                 </label>
                 <div className="grid grid-cols-2 gap-3">
-                  {paymentMethods.map((method) => {
-                    const Icon = method.icon;
-                    const isActive = paymentMethod === method.id;
+                  {orderChannels.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = channel === item.id;
                     return (
                       <button
                         type="button"
-                        key={method.id}
-                        onClick={() => setPaymentMethod(method.id)}
+                        key={item.id}
+                        onClick={() => setChannel(item.id)}
                         className={`flex items-center justify-center gap-2 border p-3 text-sm font-semibold transition ${
                           isActive
                             ? "border-[#FF4D2E] bg-[#FF4D2E]/10 text-[#FF4D2E]"
@@ -241,7 +325,7 @@ function CheckoutModal({ pack, onClose }) {
                         }`}
                       >
                         <Icon size={16} />
-                        {method.label}
+                        {item.label}
                       </button>
                     );
                   })}
@@ -254,7 +338,8 @@ function CheckoutModal({ pack, onClose }) {
                 className="mt-2 w-full border border-[#FF4D2E] bg-[#FF4D2E] py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-transparent hover:text-[#FF4D2E] active:scale-[0.98]"
                 style={clipCorner}
               >
-                Confirm & Pay ₹{pack.price}
+                Send Order on {channel === "telegram" ? "Telegram" : "Instagram"}{" "}
+                · ₹{pack.price}
               </button>
             </form>
           </>

@@ -6,6 +6,7 @@ import NotFound from "./components/notFound";
 import RefundPolicy from "./pages/RefundPolicy";
 import CustomerSupport from "./pages/CustomerSupport";
 import ReportIssue from "./pages/ReportIssue";
+import ScratchOffer from "./components/Scratchoffer";
  
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
     <Route path="/RefundPolicy" element={<RefundPolicy/>} />
     <Route path="/CustomerSupport" element={<CustomerSupport/>} />
     <Route path="/ReportIssue" element={<ReportIssue/>} />
+    <Route path="/ScratchOffer" element={<ScratchOffer/>} />
     <Route path="/*" element={<NotFound/>} />
    </Routes>
     </>
