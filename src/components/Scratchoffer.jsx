@@ -5,6 +5,9 @@ const TELEGRAM_USERNAME = "BGMI_PopWala";
 const INSTAGRAM_USERNAME = "bgmipopwala";
 const STORAGE_KEY = "popwala_scratch_v1";
 
+// false = unlimited scratches (naya card har baar), true = ek device par ek hi card
+const ONE_PER_DEVICE = false;
+
 const clipCorner = {
   clipPath:
     "polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)",
@@ -38,11 +41,13 @@ const formatDate = (ts) =>
   });
 
 const loadOrCreateCard = () => {
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (saved && saved.amount && saved.code) return saved;
-  } catch (e) {
-    // ignore
+  if (ONE_PER_DEVICE) {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (saved && saved.amount && saved.code) return saved;
+    } catch (e) {
+      // ignore
+    }
   }
   const card = {
     amount: pickReward(),
@@ -50,10 +55,12 @@ const loadOrCreateCard = () => {
     time: Date.now(),
     revealed: false,
   };
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(card));
-  } catch (e) {
-    // ignore
+  if (ONE_PER_DEVICE) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(card));
+    } catch (e) {
+      // ignore
+    }
   }
   return card;
 };
@@ -120,13 +127,15 @@ function ScratchOffer() {
     }
     if (cleared / total > 0.5) {
       setRevealed(true);
-      try {
-        localStorage.setItem(
-          STORAGE_KEY,
-          JSON.stringify({ ...card, revealed: true })
-        );
-      } catch (e) {
-        // ignore
+      if (ONE_PER_DEVICE) {
+        try {
+          localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify({ ...card, revealed: true })
+          );
+        } catch (e) {
+          // ignore
+        }
       }
     }
   };
@@ -241,9 +250,11 @@ function ScratchOffer() {
                 <FiInstagram size={14} /> Instagram
               </a>
             </div>
-            <p className="mt-3 text-center text-[11px] text-gray-500">
-              One scratch card per device.
-            </p>
+            {ONE_PER_DEVICE && (
+              <p className="mt-3 text-center text-[11px] text-gray-500">
+                One scratch card per device.
+              </p>
+            )}
           </div>
         )}
       </div>
